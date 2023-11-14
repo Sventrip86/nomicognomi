@@ -55,18 +55,18 @@ public class Person {
     }
 
     // No-arg constructor
-    public Post() {
+    public Person() {
     }
 
 
     public void addTag(Tag tag) {
         tags.add(tag);
-        tag.getPosts().add(this);
+        tag.getPersons().add(this);
     }
 
     public void removeTag(Tag tag) {
         tags.remove(tag);
-        tag.getPosts().remove(this);
+        tag.getPersons().remove(this);
     }
 
     public void removeAllTags() {
