@@ -18,20 +18,21 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long personId;
 
-    public Person(String name, String secondName, String surname) {
-        this.name = name;
-        this.secondName = secondName;
-        this.surname = surname;
-    }
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
     @Column
     private String secondName;
 
-    @Column
+    @Column(nullable = false)
     private String surname;
+
+    @Column(length = 1000) // Assuming comments are not too long
+    private String comment;
+
+    @Column
+    private int rating; // Rating from 1 to 10
 
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -43,6 +44,11 @@ public class Person {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private Date createdDate;
+
 
     // Getters and setters
 
@@ -57,6 +63,13 @@ public class Person {
     // No-arg constructor
     public Person() {
     }
+
+    public Person(String name, String secondName, String surname) {
+        this.name = name;
+        this.secondName = secondName;
+        this.surname = surname;
+    }
+
 
 
     public void addTag(Tag tag) {
@@ -118,6 +131,25 @@ public class Person {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        if (rating < 1 || rating > 10) {
+            throw new IllegalArgumentException("Rating must be between 1 and 10");
+        }
+        this.rating = rating;
     }
 
 
